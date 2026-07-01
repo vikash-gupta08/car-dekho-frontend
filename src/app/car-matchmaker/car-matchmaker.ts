@@ -37,8 +37,8 @@ interface BackendCarResponse {
 export class CarMatchmaker {
   private readonly http = inject(HttpClient);
   private readonly cdr = inject(ChangeDetectorRef);
-  // Backend base URL comes from environment files. Falls back to localhost if missing.
-  private readonly base = environment?.backendBaseUrl ?? 'http://localhost:8081';
+  // Backend base URL comes from environment files. Falls back to the Railway deployment if missing.
+  private readonly base = environment?.backendBaseUrl ?? 'https://car-dekho-backend-production.up.railway.app';
   private readonly backendUrl = this.base + '/api/car-matchmaker/match';
 
   maxBudget: number = 15000;
@@ -90,7 +90,7 @@ export class CarMatchmaker {
           finish();
       },
       error: () => {
-        this.errorMessage = 'Could not fetch matches from the backend. Please make sure localhost:8080 is running.';
+        this.errorMessage = 'Could not fetch matches from the backend. Please check the Railway backend URL and try again.';
           finish();
       },
     });
