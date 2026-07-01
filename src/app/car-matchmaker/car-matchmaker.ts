@@ -13,6 +13,7 @@ interface CarMatch {
   isTopMatch?: boolean;
 }
 
+
 interface BackendCarRecommendation {
   name: string;
   type: string;
