@@ -1,4 +1,6 @@
-# Car Search Engine (Dekho) - Project Retrospective
+# Car Dekho - Project Retrospective
+# Backend Repo - https://github.com/vikash-gupta08/car-dekho-backend
+# Frontend Repo - https://github.com/vikash-gupta08/car-dekho-frontend
 
 ## What We Built
 
@@ -69,19 +71,19 @@
 ## What We Delegated to AI Tools vs. Did Manually
 
 ### Delegated to AI (GitHub Copilot CLI):
-✅ **Code Generation (70% efficiency gain)**
+**Code Generation (70% efficiency gain)**
 - Generated `CarMatchmakerService` class with scoring algorithm
 - Created Spring AI integration boilerplate
 - Wrote DTO classes with proper Jackson annotations
 - Generated `DataLoader` configuration
 - Created REST controller stubs
 
-✅ **Configuration Scaffolding**
+**Configuration Scaffolding**
 - `build.gradle` dependency setup (Spring Boot, Spring AI versions)
 - `application.properties` with OpenAI/Gemini config templates
 - CORS configuration
 
-✅ **Testing Boilerplate**
+**Testing Boilerplate**
 - JUnit 5 test structure (though tests not yet comprehensive)
 
 ### Done Manually:
