@@ -19,7 +19,7 @@
 4. **In-Memory Database (H2)** - Fast prototyping without infrastructure overhead
 5. **JSON Data Loading** - Simple, version-controllable car database
 
-## What We Deliberately Cut
+## What We Deliberately Cut it.
 
 | Feature | Reason |
 |---------|--------|
