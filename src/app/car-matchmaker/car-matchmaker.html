@@ -63,7 +63,12 @@
           class="personalized-input"
           rows="3"
           placeholder="Tell us what matters most to you..."
+          [(ngModel)]="personalizedPrompt"
         ></textarea>
+
+        <button type="button" class="submit-btn ai-btn" [disabled]="isAiSubmitting || !personalizedPrompt.trim()" (click)="submitPersonalizedPrompt()">
+          {{ isAiSubmitting ? 'Thinking...' : 'Ask Car Dekho AI' }}
+        </button>
       </div>
     </form>
   </div>
@@ -78,6 +83,7 @@
     </div>
 
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="aiMessage" class="status-message success">{{ aiMessage }}</div>
 
     <div class="results-list">
       <div

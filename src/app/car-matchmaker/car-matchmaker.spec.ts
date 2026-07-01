@@ -1,23 +1,43 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CarMatchmaker } from './car-matchmaker';
 
 describe('CarMatchmaker', () => {
   let component: CarMatchmaker;
   let fixture: ComponentFixture<CarMatchmaker>;
+  let httpMock: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CarMatchmaker],
+      imports: [CarMatchmaker, HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CarMatchmaker);
     component = fixture.componentInstance;
+    httpMock = TestBed.inject(HttpTestingController);
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should send the personalized prompt to the chat endpoint', () => {
+    component.personalizedPrompt = 'I want a safe family SUV under $30k';
+
+    component.submitPersonalizedPrompt();
+
+    const req = httpMock.expectOne((request) => request.url.includes('/chat'));
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ prompt: 'I want a safe family SUV under $30k' });
+
+    req.flush({ success: true, recommendations: [] });
+    expect(component.isAiSubmitting).toBeFalse();
   });
 
   it('should build a shortlist with five recommendations when provided', () => {

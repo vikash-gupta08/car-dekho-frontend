@@ -40,12 +40,16 @@ export class CarMatchmaker {
   // Backend base URL comes from environment files. Falls back to the Railway deployment if missing.
   private readonly base = environment?.backendBaseUrl ?? 'https://car-dekho-backend-production.up.railway.app';
   private readonly backendUrl = this.base + '/api/car-matchmaker/match';
+  private readonly chatUrl = this.base + '/chat';
 
   maxBudget: number = 15000;
   primaryUse: string = 'family';
   topPriority: string = 'fuel';
+  personalizedPrompt = '';
   isSubmitting = false;
+  isAiSubmitting = false;
   errorMessage = '';
+  aiMessage = '';
   // preference changes no longer auto-submit
   vehicleShortlist: CarMatch[] = [
     {
@@ -109,6 +113,39 @@ export class CarMatchmaker {
           this.cdr.markForCheck();
         }
       };
+  }
+
+  submitPersonalizedPrompt(): void {
+    const prompt = this.personalizedPrompt.trim();
+
+    if (!prompt) {
+      this.errorMessage = 'Please enter a prompt for Car Dekho AI.';
+      this.aiMessage = '';
+      return;
+    }
+
+    this.isAiSubmitting = true;
+    this.errorMessage = '';
+    this.aiMessage = '';
+
+    this.http.post<BackendCarResponse>(this.chatUrl, { prompt }).subscribe({
+      next: (response) => {
+        if (response.success && response.recommendations?.length) {
+          this.vehicleShortlist = this.buildVehicleShortlist(response.recommendations);
+          this.aiMessage = response.message || 'Here are the personalized car picks from Car Dekho AI.';
+        } else {
+          this.errorMessage = response.message || 'No AI suggestions were returned.';
+          this.vehicleShortlist = this.buildVehicleShortlist([]);
+        }
+        this.isAiSubmitting = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.errorMessage = 'Could not reach the AI chat backend. Please try again in a moment.';
+        this.isAiSubmitting = false;
+        this.cdr.markForCheck();
+      },
+    });
   }
 
   // No lifecycle hooks required for auto-submission; API is called on button click only
