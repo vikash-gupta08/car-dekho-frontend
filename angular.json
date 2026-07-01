@@ -2,11 +2,12 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
-    "car-dekho-frontend": {
+    "car-dekho": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -26,15 +27,7 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": []
-            },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -64,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "car-dekho-frontend:build:production"
+              "buildTarget": "car-dekho:build:production"
             },
             "development": {
-              "buildTarget": "car-dekho-frontend:build:development"
+              "buildTarget": "car-dekho:build:development"
             }
           },
           "defaultConfiguration": "development"

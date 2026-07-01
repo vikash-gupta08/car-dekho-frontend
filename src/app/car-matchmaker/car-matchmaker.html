@@ -1,0 +1,105 @@
+<div class="matchmaker-container">
+  <div class="panel input-panel">
+    <div class="panel-header">
+      <h2>Car Matchmaker</h2>
+      <p>Tell us how you live. We'll find what you should drive.</p>
+    </div>
+
+    <form class="matchmaker-form" (ngSubmit)="submitPreferences()">
+      <div class="form-group">
+        <label for="budget">Max Budget: <span class="badge">${{ maxBudget | number }}</span></label>
+        <input
+          type="range"
+          id="budget"
+          min="15000"
+          max="75000"
+          step="2500"
+            [(ngModel)]="maxBudget"
+          name="maxBudget"
+          class="slider"
+        >
+        <div class="slider-labels">
+          <span>$15k</span>
+          <span>$75k</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="usecase">Primary Use Case</label>
+        <select id="usecase" [(ngModel)]="primaryUse" name="primaryUse" class="select-input">
+          <option value="commute">Daily Commuting (City/Highway)</option>
+          <option value="family">Family Hauler (Kids & Cargo)</option>
+          <option value="adventure">Weekend Adventures & Trails</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Your Top Priority</label>
+        <div class="segmented-control">
+          <input type="radio" id="prio-fuel" name="priority" value="fuel" [(ngModel)]="topPriority">
+          <label for="prio-fuel">Fuel Economy</label>
+
+          <input type="radio" id="prio-safety" name="priority" value="safety" [(ngModel)]="topPriority">
+          <label for="prio-safety">Safety Rating</label>
+
+          <input type="radio" id="prio-space" name="priority" value="space" [(ngModel)]="topPriority">
+          <label for="prio-space">Cargo Space</label>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Finding Matches...' : 'Find My Car' }}
+      </button>
+
+      <div class="divider-or">
+        <span>OR</span>
+      </div>
+
+      <div class="personalized-box">
+        <label for="personalizedPrompt" class="personalized-label">Get personalised car by asking by Car Dekho AI</label>
+        <textarea
+          id="personalizedPrompt"
+          name="personalizedPrompt"
+          class="personalized-input"
+          rows="3"
+          placeholder="Tell us what matters most to you..."
+        ></textarea>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel results-panel">
+    <div class="panel-header">
+      <h3>Your Shortlist</h3>
+      <p>
+        Top algorithmic matches for {{ primaryUse | titlecase }} use, prioritizing {{ topPriority | titlecase }},
+        within a ${{ maxBudget | number }} budget.
+      </p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <div class="results-list">
+      <div
+        *ngFor="let car of vehicleShortlist"
+        class="car-card"
+        [ngClass]="{'top-match': car.isTopMatch}"
+      >
+        <div class="car-meta">
+          <span class="match-badge" [ngClass]="getScoreClass(car.score)">
+            {{ car.score }}% Match
+          </span>
+          <h4>{{ car.name }}</h4>
+          <p class="car-type">{{ car.type }}</p>
+        </div>
+
+        <div class="score-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" [style.width.%]="car.score" [ngClass]="getScoreClass(car.score)"></div>
+          </div>
+          <p class="trigger-reason">{{ car.reason }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
