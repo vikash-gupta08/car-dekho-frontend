@@ -273,6 +273,8 @@ Refer to `SPRING_AI_SETUP.md` for API usage and setup instructions.
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.17.
 
 ## Development server
+## Url - https://car-dekho-frontend-qgax-kjhw3puvf-vikash-gupta08s-projects.vercel.app/
+## frontend app is deployed on vercel app.
 
 To start a local development server, run:
 
